@@ -1,0 +1,19 @@
+{
+  "name": "devmatch",
+  "version": "1.0.0",
+  "description": "connection place specifically for developers",
+  "main": "index.js",
+  "scripts": {
+    "dev" : "nodemon src/app.js",
+    "start": "node src/app.js"
+  },
+  "keywords": [
+    "nodejs",
+    "javascript"
+  ],
+  "author": "Ashutosh ojha",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
