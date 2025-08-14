@@ -1,1 +1,89 @@
 node_modules
+
+learnings : 
+// const{ adminAuth , userAuth } = require("./middlewares/auth")
+
+// // app.use("/profile",(req, res) => {
+// //   res.send("hello from the server");
+// // })
+
+// // app.use("/test",(req, res) => {
+// //   res.send("hello from the test server");
+// // })
+
+// // app.use("/user", (req, res, next) =>{ 
+// //   console.log("1st response");
+// //   next();
+// // },[ 
+// // (req, res, next) => {
+// //   console.log("2ndresponse"); 
+// //   next();
+// //   res.send("response_2");
+// // }, 
+// // (req, res, next) => {
+// //   console.log("3rdresponse"); 
+// //   res.send("response_3");
+// // }], 
+// // (req, res, next) => {
+// //   console.log("4thresponse"); 
+// //   res.send("response_4");
+// // });
+
+// // app.get("/user/:userId" , (req, res) => {
+// //   res.send("data fetched successfully");
+// //   console.log(req.params);
+// // });
+
+// // app.post("/user" , (req, res) => {
+// //   res.send("data posted successfully");
+// // });
+
+// // app.delete("/user" , (req, res) => {
+// //   res.send("data deleted successfully");
+// // });
+
+// // app.use("/",(req, res) => {
+// //   res.send("welcome on server");
+// // })
+
+// // app.use("/admin" , adminAuth);
+
+// // app.get("/admin/getAllData" , (req, res) => {
+// // // logic of checking is the request is authorzed
+// // // const token = req.body?.token;
+// // // const isAdminAuthorized = token === 'xyz';
+// // // we have created a middleware above so that we don't have 
+// // // to write it again and again
+
+// //   res.send("all data sent");
+// // });
+
+// // app.get("/admin/deleteUser" , (req, res) => {
+// //   res.send("user deleted");
+// // });
+
+// // app.get("/user" , userAuth , (req , res) => {
+// //   res.send("user data sent");
+// // });
+
+// app.use("/" , (err, req, res, next) => {
+//   if(err){
+//     res.status(500).send("contact support ");
+//   }
+// })
+
+// app.get("/userData" , (req, res) => {
+//   // try{
+//     throw new Error ("asjhg");
+//     res.send("user data sent");
+
+//   // } catch (err){
+//   //   res.status(500).send("something went wrong");
+//   // }
+// })
+
+// app.use("/" , (err, req, res, next) => {
+//   if(err){
+//     res.status(500).send("contact support ");
+//   }
+// })
