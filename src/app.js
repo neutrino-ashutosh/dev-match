@@ -3,17 +3,65 @@ const connectDB = require("./config/database");
 const app = express();
 const User = require("./models/user");
 
+app.use(express.json());
+
+// add user dynamically in the database
 app.post("/signup" , async (req, res) => {
   // creating a new instance of the user model
-  const user = new User({
-    firstName: "aakansha",
-    lastName: "singh",
-    emailId: "aakanshavgk@gmail.com",
-    password : "12345",
-  });
+  const user = new User(req.body);
 
   await user.save();
   res.send("user added successfully");
+});
+
+// find a user by their email id
+app.get("/user" , async(req, res) =>{
+  const userEmail = req.body.emailId;
+
+  try{
+    console.log(userEmail);
+    const user = await User.findOne({emailId : userEmail});
+    if(!user) {
+      res.status(404).send("user not found");
+    } else {
+      res.send(user);
+    }
+  } catch(err){
+    res.status(400).send("something went wrong");
+  }
+});
+
+// get all the users from database
+app.get("/feed" , async(req, res) => {
+  try{
+    const user = await User.find({});
+    res.send(user);
+  } catch(err){
+    res.status(400).send("something went wrong");
+  }
+});
+
+app.delete("/user" , async(req, res) => {
+
+  const userId = req.body.userId ;
+  try{
+    const user = await User.findByIdAndDelete(userId);
+    res.send("user deleted successfully");
+  } catch(err){
+    res.status(400).send("something went wrong");
+  }
+});
+
+app.patch("/user" , async(req, res) => {
+
+  const userId = req.body.userId ;
+  const data = req.body.data ;
+  try{
+    const user = await User.findByIdAndUpdate(userId , data);
+    res.send("user updated  successfully");
+  } catch(err){
+    res.status(400).send("something went wrong");
+  }
 });
 
 connectDB()
