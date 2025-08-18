@@ -6,6 +6,7 @@ const {validateSignUpData} = require("./utils/validation");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const {userAuth} = require("./middlewares/auth");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -38,32 +39,39 @@ app.post("/signup" , async (req, res) => {
   }
 });
 
-app.get("/profile" , async(req, res) => {
+app.get("/profile" , userAuth,  async(req, res) => {
   try {
-    const cookies = req.cookies;
+    // const cookies = req.cookies;
 
-    const {token} = cookies;
-    if(!token){
-      throw new Error("invalid token");
-    }
+    // const {token} = cookies;
+    // if(!token){
+    //   throw new Error("invalid token");
+    // }
 
-    const decodedMessage = await jwt.verify(token, "AshuAakansha$@2119");
+    // const decodedMessage = await jwt.verify(token, "AshuAakansha$@2119");
 
-    console.log(decodedMessage);
-    const {_id} = decodedMessage;
-    console.log("logged in user is : " + _id);
+    // console.log(decodedMessage);
+    // const {_id} = decodedMessage;
+    // console.log("logged in user is : " + _id);
 
-    const user = await User.findById(_id);
-    if(!user){
-      throw new Error("User does not exist");
-    }
-
+    const user = req.user;
+    // if(!user){
+    //   throw new Error("User does not exist");
+    // }
     res.send(user);
+
   }
   catch (err){
     res.status(400).send("Error : " + err.message);
   }
 
+});
+
+app.post("/sendConnectionRequest", userAuth, async(req, res) => {
+  const user = req.user;
+  console.log("sending a connection request")
+
+  res.send(user.firstName + " sent a connection request ");
 })
 
 app.post("/login", async(req,res) => {
@@ -75,14 +83,16 @@ app.post("/login", async(req,res) => {
       throw new Error("invalid mail");
     }
 
-    const isPasswordValid = await bcrypt.compare(password , user.password );
+    const isPasswordValid = await user.validatePassword(password);
 
     if(isPasswordValid){
 
-      const token = await jwt.sign({_id : user._id}, "AshuAakansha$@2119");
+      const token  = await user.getJWT();
       console.log(token);
 
-      res.cookie("token", token);
+      res.cookie("token", token, {
+        expires : new Date(Date.now() + 8 * 3600000),
+      });
       res.send("user login successfully");
     } else {
       throw new Error("invalid password");
