@@ -70,6 +70,12 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+// ConnectionRequest.find({fromUserId : 294524653784593645 , toUserId : 432756023784150857});
+
+// connectionRequestSchema.index({fromUserId : 1, toUserId : 1});
+
+// userSchema.index({ firstName : 1, lastName : 1});
+
 userSchema.methods.getJWT = async function () {
   const user = this ;
   const token = await jwt.sign({_id : user._id}, "AshuAakansha$@2119", {
@@ -81,12 +87,14 @@ userSchema.methods.getJWT = async function () {
 
 userSchema.methods.validatePassword = async function (passwordInputByUser) {
   const user = this ;
-  const passwordHash = user.passwordHash;
+  const passwordHash = user.password;
 
   const isPasswordValid = await bcrypt.compare(
     passwordInputByUser,
     passwordHash
   );
+
+  return isPasswordValid ;
 }
 
 module.exports = mongoose.model("User", userSchema );
